@@ -4,24 +4,31 @@ using UnityEngine;
 
 public class Object : MonoBehaviour
 {
-    public float health = 4;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+    public float health = 2;
+ 
     void Update()
     {
-        if (health <0)
+        if (health <=0)                     // deactivates object is health is over
+        {
+            gameObject.SetActive(false);
+        }
+
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Spawner"))
         {
             gameObject.SetActive(false);
         }
     }
 
-    public void takeDamage (float damage)
+
+    //will be called from gun script to do damage to the object
+    public void takeDamage(float damage)
     {
         health -= damage;
     }
+    
 }
