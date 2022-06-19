@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    [SerializeField] private float gunDamage = 3;
+    [SerializeField] private float gunDamage = 2;
     [SerializeField] private float range = 50;
-    private float fireRate = 3;
+    private float fireRate = 2;
     private float nextFireTime =0;
 
-    public Camera fpsCam;
+    private bool initialIgnore;
+
+    private GameObject fpsCam;
+    private CameraMovement cameraScript;
+    private AudioSource fireSoundSource;
+    public AudioClip fireSound;
+    public ParticleSystem muzzleFlash;
+
     void Start()
     {
-        
+        fireSoundSource = GetComponent<AudioSource>();
+        fpsCam = GameObject.Find("PlayerSystem");
+        cameraScript = fpsCam.GetComponent<CameraMovement>();
+
+        initialIgnore = true;
     }
 
     void Update()
@@ -27,17 +38,23 @@ public class Gun : MonoBehaviour
 
     void shoot()
     {
-        RaycastHit ray;
-
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward,out ray,range))
+        if (!initialIgnore)
         {
-            Object obj = ray.transform.GetComponent<Object>();   // if the object is destroyable (has Object script on it) only then the obj will be assigned
-            if (obj != null)
-            {
-                obj.takeDamage(gunDamage);
-            }
-        }
+            RaycastHit ray;
 
+            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out ray, range))
+            {
+                Object obj = ray.transform.GetComponent<Object>();   // if the object is destroyable (has Object script on it) only then the obj will be assigned
+                if (obj != null)
+                {
+                    obj.takeDamage(gunDamage);
+                }
+            }
+            fireSoundSource.PlayOneShot(fireSound);
+            cameraScript.getRecoil();
+            muzzleFlash.Play();
+        }
+        initialIgnore = false;
     }
 
 }

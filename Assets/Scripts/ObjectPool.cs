@@ -19,6 +19,8 @@ public class ObjectPool : MonoBehaviour
     public GameObject[] spawnerArray = new GameObject[8];
     void Start()
     {
+        Physics.gravity = new Vector3(0,-18,0);
+
         // creating array of objects to pool
         poolArray = new GameObject[objects.Count * poolNumber];
 
@@ -31,20 +33,27 @@ public class ObjectPool : MonoBehaviour
             }
         }
        
-        InvokeRepeating("randomObjectSpawn", 1.0f, timeGap);  // Starts continuous spawnning
+        InvokeRepeating("randomObjectSpawn", 2.0f, timeGap);  // Starts continuous spawnning
 
     }
 
     // spawns random oject at random position
     void randomObjectSpawn()
     {
-        Vector3 randomPos = randomPosition();
+        GameObject randomSpaw = randomSpawner();
+        Vector3 randomPos = randomSpaw.transform.position + new Vector3(0,6,0);
+
         GameObject randomObj = randomObject();
+        Rigidbody randomObjRb = randomObj.GetComponent<Rigidbody>();
+        Object randomObjScript = randomObj.GetComponent<Object>();
 
         randomObj.transform.position = randomPos;
         randomObj.transform.eulerAngles = objectRotation;
+        randomObjScript.currentHealth = randomObjScript.health;
         randomObj.SetActive(true);
+        randomObjRb.velocity = new Vector3(0, 0, 0);
         randomObj.GetComponent<Rigidbody>().AddForce(Vector3.up * throwForce, ForceMode.Impulse);
+        randomObjScript.sourceSpawner = randomSpaw;
 
     }
 
@@ -62,7 +71,7 @@ public class ObjectPool : MonoBehaviour
     }
 
     // returns random usable spawnner position given the ranges
-    Vector3 randomPosition()
+    GameObject randomSpawner()
     {
         GameObject temp = spawnerArray[Random.Range(0, spawnerArray.Length)];
         SpawnerBlocks tempScript = temp.GetComponent<SpawnerBlocks>();
@@ -70,10 +79,13 @@ public class ObjectPool : MonoBehaviour
         if (tempScript.canBeUsed)
         {
             tempScript.canBeUsed = false;
-            Debug.Log(temp.transform.position.x.ToString());
-            return new Vector3(temp.transform.position.x, 2.0f, 27.4f);
+            return temp;
         }
-        return randomPosition();
+        return randomSpawner();
     }
 
+    public void gameEnder()
+    {
+        CancelInvoke("randomObjectSpawn");
+    }
 }

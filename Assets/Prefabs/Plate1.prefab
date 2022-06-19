@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8259152725767693308}
   - component: {fileID: 4060926966935640960}
   - component: {fileID: 6601084774949201935}
+  - component: {fileID: 328267568908568909}
   m_Layer: 0
   m_Name: Plate1
   m_TagString: Untagged
@@ -28,14 +29,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5094825326600087173}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.61201024, y: 0, z: 0, w: 0.79084986}
   m_LocalPosition: {x: -1.0247841, y: 5.57, z: 9.49}
   m_LocalScale: {x: 1.52, y: 1.52, z: 1.52}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 75.47, y: 0, z: 0}
 --- !u!33 &5098247822588547257
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -99,8 +100,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  flyForce: 20
-  isActivated: 0
+  currentHealth: 2
+  points: 15
+  sourceSpawner: {fileID: 0}
+  blast: {fileID: 3371569193385938658, guid: 745208c9d6e104225bd99e1ab894e3bb, type: 3}
 --- !u!54 &4060926966935640960
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -109,7 +112,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5094825326600087173}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 6
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -126,7 +129,21 @@ SphereCollider:
   m_GameObject: {fileID: 5094825326600087173}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.88752735
   m_Center: {x: 0, y: 0.0045009223, z: 0.00000005960465}
+--- !u!64 &328267568908568909
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5094825326600087173}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: f6c0da0ba5de33b4b9547f2cca90a5fd, type: 3}

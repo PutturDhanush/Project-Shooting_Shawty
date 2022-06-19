@@ -5,11 +5,25 @@ using UnityEngine;
 public class Object : MonoBehaviour
 {
     public float health = 2;
- 
+    public float currentHealth = 2;
+    public int points;
+
+    public GameObject sourceSpawner;
+    public GameObject blast;
+    private GameUIManager UIScript;
+
+    private void Start()
+    {
+        UIScript = GameObject.Find("Canvas").GetComponent<GameUIManager>();
+    }
+
     void Update()
     {
-        if (health <=0)                     // deactivates object is health is over
+        if (currentHealth <=0)                     // deactivates object is health is over
         {
+            sourceSpawner.GetComponent<SpawnerBlocks>().canBeUsed = true;   // setting the spawner as usable after this object gets deactivated 
+            UIScript.updateScore(points);
+            Instantiate(blast, transform.position, transform.rotation);
             gameObject.SetActive(false);
         }
 
@@ -20,6 +34,7 @@ public class Object : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Spawner"))
         {
+            UIScript.objectMissed();
             gameObject.SetActive(false);
         }
     }
@@ -28,7 +43,7 @@ public class Object : MonoBehaviour
     //will be called from gun script to do damage to the object
     public void takeDamage(float damage)
     {
-        health -= damage;
+        currentHealth -= damage;
     }
     
 }
