@@ -9,8 +9,6 @@ public class Gun : MonoBehaviour
     private float fireRate = 2;
     private float nextFireTime =0;
 
-    private bool initialIgnore;
-
     private GameObject fpsCam;
     private CameraMovement cameraScript;
     private AudioSource fireSoundSource;
@@ -23,7 +21,6 @@ public class Gun : MonoBehaviour
         fpsCam = GameObject.Find("PlayerSystem");
         cameraScript = fpsCam.GetComponent<CameraMovement>();
 
-        initialIgnore = true;
     }
 
     void Update()
@@ -31,30 +28,26 @@ public class Gun : MonoBehaviour
         // shoots with given fire rate
         if (Input.GetButtonDown("Fire1") && Time.time > nextFireTime)
         {
-            shoot();
+            Shoot();
             nextFireTime = Time.time + (1 / fireRate);
         }
     }
 
-    void shoot()
+    void Shoot()
     {
-        if (!initialIgnore)
-        {
-            RaycastHit ray;
+        RaycastHit ray;
 
-            if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out ray, range))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out ray, range))
+        {
+            Object obj = ray.transform.GetComponent<Object>();   // if the object is destroyable (has Object script on it) only then the obj will be assigned
+            if (obj != null)
             {
-                Object obj = ray.transform.GetComponent<Object>();   // if the object is destroyable (has Object script on it) only then the obj will be assigned
-                if (obj != null)
-                {
-                    obj.takeDamage(gunDamage);
-                }
+                obj.TakeDamage(gunDamage);
             }
-            fireSoundSource.PlayOneShot(fireSound);
-            cameraScript.getRecoil();
-            muzzleFlash.Play();
         }
-        initialIgnore = false;
+        fireSoundSource.PlayOneShot(fireSound);
+        cameraScript.GetRecoil();
+        muzzleFlash.Play();
     }
 
 }

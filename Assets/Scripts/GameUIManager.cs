@@ -15,6 +15,7 @@ public class GameUIManager : MonoBehaviour
 
     public Button startButton;
     public Button restartButton;
+    public Button mainMenu;
 
     private CameraMovement cameraScript;
     private Gun gunScript;
@@ -30,16 +31,17 @@ public class GameUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        startButton.onClick.AddListener(startGame);
-        restartButton.onClick.AddListener(restartGame);
+        startButton.onClick.AddListener(StartGame);
+        restartButton.onClick.AddListener(RestartGame);
+        mainMenu.onClick.AddListener(ReturnToMenu);
     }
 
     private void OnDisable()
     {
-        startButton.onClick.RemoveListener(startGame);
+        startButton.onClick.RemoveListener(StartGame);
     }
 
-    private void startGame()
+    private void StartGame()
     {
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.Locked;
@@ -47,9 +49,14 @@ public class GameUIManager : MonoBehaviour
         titleDisplay.gameObject.SetActive(false);
     }
 
-    private void restartGame()
+    private void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void ReturnToMenu()
+    {
+        //add scene change
     }
 
     void Start()
@@ -66,13 +73,13 @@ public class GameUIManager : MonoBehaviour
         gameOverDisplay.gameObject.SetActive(false);
     }
 
-    public void updateScore(int points)
+    public void UpdateScore(int points)
     {
         score += points;
         scoreDisplay.text = "Score:" + score;
     }
 
-    public void objectMissed()
+    public void ObjectMissed()
     {
         livesCount--;
         if (livesCount > 0)
@@ -82,18 +89,19 @@ public class GameUIManager : MonoBehaviour
         else
         {
             Destroy(lives[0]);
-            gameOver();
+            GameOver();
         }
     }
 
-    void gameOver()
+    void GameOver()
     {
         gameOverDisplay.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
 
         gunScript.enabled = false;
-        poolScript.gameEnder();
+        poolScript.GameEnder();
     }
 
 }

@@ -22,7 +22,7 @@ public class Object : MonoBehaviour
         if (currentHealth <=0)                     // deactivates object is health is over
         {
             sourceSpawner.GetComponent<SpawnerBlocks>().canBeUsed = true;   // setting the spawner as usable after this object gets deactivated 
-            UIScript.updateScore(points);
+            UIScript.UpdateScore(points);
             Instantiate(blast, transform.position, transform.rotation);
             gameObject.SetActive(false);
         }
@@ -34,14 +34,14 @@ public class Object : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Spawner"))
         {
-            UIScript.objectMissed();
+            UIScript.ObjectMissed();
             gameObject.SetActive(false);
         }
     }
 
 
     //will be called from gun script to do damage to the object
-    public void takeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
     }

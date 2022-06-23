@@ -13,6 +13,8 @@ public class CameraMovement : MonoBehaviour
     private Rigidbody cameraRb;
     private Vector3 startPosition;
 
+    [SerializeField] private float recoilForce = 10;
+
     private void Start()
     {
         cameraRb = gameObject.GetComponent<Rigidbody>();
@@ -30,13 +32,13 @@ public class CameraMovement : MonoBehaviour
 
     }
 
-    public void getRecoil()
+    public void GetRecoil()
     {
-        cameraRb.AddForce(-Vector3.forward * 30, ForceMode.Impulse);
-        StartCoroutine(setPushFront(0.1f));
+        cameraRb.AddForce(-Vector3.forward * recoilForce , ForceMode.Impulse);
+        StartCoroutine(SetPushFront(0.1f));
     }
 
-    IEnumerator setPushFront(float gap)
+    IEnumerator SetPushFront(float gap)
     {
         yield return new WaitForSeconds(gap);
         cameraRb.velocity = new Vector3(0, 0, 0);

@@ -33,17 +33,17 @@ public class ObjectPool : MonoBehaviour
             }
         }
        
-        InvokeRepeating("randomObjectSpawn", 2.0f, timeGap);  // Starts continuous spawnning
+        InvokeRepeating("RandomObjectSpawn", 2.0f, timeGap);  // Starts continuous spawnning
 
     }
 
     // spawns random oject at random position
-    void randomObjectSpawn()
+    void RandomObjectSpawn()
     {
-        GameObject randomSpaw = randomSpawner();
+        GameObject randomSpaw = RandomSpawner();
         Vector3 randomPos = randomSpaw.transform.position + new Vector3(0,6,0);
 
-        GameObject randomObj = randomObject();
+        GameObject randomObj = RandomObject();
         Rigidbody randomObjRb = randomObj.GetComponent<Rigidbody>();
         Object randomObjScript = randomObj.GetComponent<Object>();
 
@@ -59,19 +59,19 @@ public class ObjectPool : MonoBehaviour
 
 
     // returns random inactive game object
-    GameObject randomObject()
+    GameObject RandomObject()
     {
         GameObject randomObj = poolArray[Random.Range(0, poolArray.Length)];
         if (randomObj.activeInHierarchy == false)
         {
             return randomObj;
         }
-        return randomObject();
+        return RandomObject();
 
     }
 
     // returns random usable spawnner position given the ranges
-    GameObject randomSpawner()
+    GameObject RandomSpawner()
     {
         GameObject temp = spawnerArray[Random.Range(0, spawnerArray.Length)];
         SpawnerBlocks tempScript = temp.GetComponent<SpawnerBlocks>();
@@ -81,11 +81,11 @@ public class ObjectPool : MonoBehaviour
             tempScript.canBeUsed = false;
             return temp;
         }
-        return randomSpawner();
+        return RandomSpawner();
     }
 
-    public void gameEnder()
+    public void GameEnder()
     {
-        CancelInvoke("randomObjectSpawn");
+        CancelInvoke("RandomObjectSpawn");
     }
 }
