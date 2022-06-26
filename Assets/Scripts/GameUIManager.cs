@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,8 +8,11 @@ public class GameUIManager : MonoBehaviour
     public TextMeshProUGUI scoreDisplay;
     public int score;
 
+    public Canvas pauseCanvas;
+
     public TextMeshProUGUI gameOverDisplay;
     public TextMeshProUGUI titleDisplay;
+    public TextMeshProUGUI pauseDisplay;
 
     public Button startButton;
     public Button restartButton;
@@ -27,6 +28,25 @@ public class GameUIManager : MonoBehaviour
     void Awake()
     {
         Time.timeScale = 0;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P) && pauseDisplay.gameObject.activeSelf)
+        {
+            PauseGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && pauseCanvas.gameObject.activeSelf)
+        {
+            ResumeGame();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && pauseCanvas.gameObject.activeSelf)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            ReturnToMenu();
+        }
     }
 
     private void OnEnable()
@@ -47,7 +67,25 @@ public class GameUIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         startButton.gameObject.SetActive(false);
         titleDisplay.gameObject.SetActive(false);
+        pauseDisplay.gameObject.SetActive(true);
     }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+        pauseCanvas.gameObject.SetActive(true);
+        pauseDisplay.gameObject.SetActive(false);
+        Debug.Log("paused");
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseCanvas.gameObject.SetActive(false);
+        pauseDisplay.gameObject.SetActive(true);
+        Debug.Log("resumed");
+    }
+
 
     private void RestartGame()
     {
@@ -56,7 +94,7 @@ public class GameUIManager : MonoBehaviour
 
     private void ReturnToMenu()
     {
-        //add scene change
+        SceneManager.LoadScene(0);
     }
 
     void Start()
@@ -103,5 +141,7 @@ public class GameUIManager : MonoBehaviour
         gunScript.enabled = false;
         poolScript.GameEnder();
     }
+
+    
 
 }

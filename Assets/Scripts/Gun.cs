@@ -5,19 +5,19 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     [SerializeField] private float gunDamage = 2;
-    [SerializeField] private float range = 50;
+    [SerializeField] private float range = 100;
     private float fireRate = 2;
     private float nextFireTime =0;
 
     private GameObject fpsCam;
     private CameraMovement cameraScript;
-    private AudioSource fireSoundSource;
+    private AudioSource soundSource;
     public AudioClip fireSound;
     public ParticleSystem muzzleFlash;
 
     void Start()
     {
-        fireSoundSource = GetComponent<AudioSource>();
+        soundSource = GetComponent<AudioSource>();
         fpsCam = GameObject.Find("PlayerSystem");
         cameraScript = fpsCam.GetComponent<CameraMovement>();
 
@@ -45,7 +45,7 @@ public class Gun : MonoBehaviour
                 obj.TakeDamage(gunDamage);
             }
         }
-        fireSoundSource.PlayOneShot(fireSound);
+        soundSource.PlayOneShot(fireSound,GameManager.instance.soundEffects);
         cameraScript.GetRecoil();
         muzzleFlash.Play();
     }

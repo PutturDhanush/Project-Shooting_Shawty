@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float Hspeed = 3.0f;
-    public float Vspeed = 3.0f;
+    public float mouseSpeed;
 
     public float mouseX;
     public float mouseY;
@@ -19,11 +18,12 @@ public class CameraMovement : MonoBehaviour
     {
         cameraRb = gameObject.GetComponent<Rigidbody>();
         startPosition = gameObject.transform.position;
+        mouseSpeed = (2 + GameManager.instance.aimSensitivity * 2) * 33;
     }
     private void Update()
     {
-        mouseX += Hspeed * Input.GetAxis("Mouse X") * Time.deltaTime * 33;
-        mouseY += Vspeed * Input.GetAxis("Mouse Y") * Time.deltaTime * 33;
+        mouseX += mouseSpeed * Input.GetAxis("Mouse X") * Time.deltaTime;
+        mouseY += mouseSpeed * Input.GetAxis("Mouse Y") * Time.deltaTime;
 
         mouseX = Mathf.Clamp(mouseX, -90, 90);
         mouseY = Mathf.Clamp(mouseY, -90, 90);

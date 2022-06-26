@@ -9,14 +9,16 @@ public class ObjectPool : MonoBehaviour
     public Vector3 objectRotation = new Vector3(0,0,0);
     public float throwForce = 20;
     public int poolNumber =4;
-    public float timeGap = 0.5f;
-
-    public float widthRange = 12.0f;
-    public float closeDis = 8.0f;
-    public float farDis = 12.0f;
+    public float timeGap;
 
     private GameObject[] poolArray;
     public GameObject[] spawnerArray = new GameObject[8];
+
+    private void Awake()
+    {
+        timeGap = 2.5f/(GameManager.instance.difficulty);
+    }
+
     void Start()
     {
         Physics.gravity = new Vector3(0,-18,0);

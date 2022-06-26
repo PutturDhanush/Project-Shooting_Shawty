@@ -10,11 +10,14 @@ public class Object : MonoBehaviour
 
     public GameObject sourceSpawner;
     public GameObject blast;
+    public AudioSource objectAudioSource;
+    public AudioClip blastSound;
     private GameUIManager UIScript;
 
     private void Start()
     {
-        UIScript = GameObject.Find("Canvas").GetComponent<GameUIManager>();
+        UIScript = GameObject.Find("Start Canvas").GetComponent<GameUIManager>();
+        objectAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -24,6 +27,7 @@ public class Object : MonoBehaviour
             sourceSpawner.GetComponent<SpawnerBlocks>().canBeUsed = true;   // setting the spawner as usable after this object gets deactivated 
             UIScript.UpdateScore(points);
             Instantiate(blast, transform.position, transform.rotation);
+            objectAudioSource.PlayOneShot(blastSound, GameManager.instance.soundEffects);
             gameObject.SetActive(false);
         }
 
